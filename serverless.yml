@@ -1,0 +1,28 @@
+service: ${self:custom.appName}
+
+provider:
+  name: aws
+  region: ${opt:region}
+  stage: ${opt:stage}
+  profile: ${opt:profile}
+  deploymentBucket: ${self:custom.appNameFull}-deploys
+
+custom:
+  appName: serverless-backend
+  appNameFull: ${self:custom:appName}-${self:provider.stage}
+
+functions:
+  helloMessage:
+    handler: src/helloMessage.handle
+    events:
+      - http:
+          path: hello/message
+          method: post
+          cors: true
+  helloWorld:
+    handler: src/helloWorld.handle
+    events:
+      - http:
+          path: hello/world
+          method: get
+          cors: true
